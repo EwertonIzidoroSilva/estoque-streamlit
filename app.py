@@ -14,7 +14,7 @@ st.set_page_config(page_title="Consulta de Estoque", page_icon="🔍")
 st.markdown("<h1 style='text-align: center;'>🔍 Consulta de Item no Estoque</h1>", unsafe_allow_html=True)
 
 # --- Leitura do parâmetro da URL ---
-query_params = st.experimental_get_query_params()
+query_params = st.query_params
 id_param = query_params.get("id", [None])[0]
 
 if id_param:
