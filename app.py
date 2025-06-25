@@ -19,7 +19,7 @@ id_param = query_params.get("id", [None])[0]
 
 if id_param:
     try:
-        resultado = supabase.table("DATABASEESTOQUE").select("*").eq("id", id_param).execute()
+        resultado = supabase.table("DATABASEESTOQUE").select("*").eq("ID", id_param).execute()
         dados = resultado.data
 
         if dados:
@@ -27,7 +27,7 @@ if id_param:
             st.success("Item encontrado!")
 
             # Campos com fallback de nomes
-            st.markdown(f"**ID**: {item.get('id')}")
+            st.markdown(f"**ID**: {item.get('ID')}")
             st.markdown(f"**Código**: {item.get('CÓDIGO') or item.get('codigo') or 'Não informado'}")
             st.markdown(f"**Nome**: {item.get('NOME') or item.get('nome') or 'Não informado'}")
             st.markdown(f"**Quantidade em Estoque**: {item.get('QUANTIDADE') or item.get('quantidade') or 'Não informado'}")
