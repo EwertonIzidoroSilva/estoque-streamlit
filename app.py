@@ -41,4 +41,3 @@ if id_param:
 
 else:
     st.info("🔎 Informe um ID na URL para realizar a consulta.\n\nExemplo:\n\n`?id=21168304736`")
-
