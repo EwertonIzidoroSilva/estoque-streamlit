@@ -1,7 +1,7 @@
 import streamlit as st
 from supabase import create_client, Client
 
-# --- Configurações do Supabase diretamente no script ---
+# --- Configurações do Supabase ---
 SUPABASE_URL = "https://xhbqtceonstbacfcgidr.supabase.co"
 SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhoYnF0Y2VvbnN0YmFjZmNnaWRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4NjIyMjMsImV4cCI6MjA2NjQzODIyM30.mml3sQJQhCWp_bNYKk7Edff-fBo1PDuqG7SPjw9bNWg"
 
@@ -24,11 +24,11 @@ if id_param:
             item = dados[0]
             st.success("Item encontrado!")
 
-            # Campos de forma segura (fallback para diferentes nomes)
+            # Exibir somente os campos desejados
             st.markdown(f"**ID**: {item.get('ID')}")
-            st.markdown(f"**Código**: {item.get('CODIGO') or item.get('CODIGO') or 'Não informado'}")
-            st.markdown(f"**Nome**: {item.get('NOME') or item.get('NOME') or 'Não informado'}")
-            st.markdown(f"**Quantidade em Estoque**: {item.get('QTDE_ATUAL') or item.get('qtde_atual') or 'Não informado'}")
+            st.markdown(f"**Nome do Produto**: {item.get('NOME') or 'Não informado'}")
+            st.markdown(f"**Quantidade em Estoque**: {item.get('QTDE_ATUAL') or 'Não informado'}")
+            st.markdown(f"**Posição**: {item.get('POSICAO') or 'Não informado'}")
 
         else:
             st.error("❌ Item não encontrado no banco de dados.")
@@ -37,4 +37,4 @@ if id_param:
         st.error(f"Erro ao consultar o banco de dados: {e}")
 
 else:
-    st.info("🔎 Informe um ID na URL para realizar a consulta.\n\nExemplo:\n\n`?id=21168304736`")
+    st.info("🔎 Informe um ID na URL para realizar a consulta.\n\nExemplo:\n\n`?ID=21168304736`")
