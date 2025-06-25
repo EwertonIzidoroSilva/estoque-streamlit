@@ -13,7 +13,7 @@ st.markdown("<h1 style='text-align: center;'>🔍 Consulta de Item no Estoque</h
 
 # --- Leitura do parâmetro da URL ---
 query_params = st.query_params
-id_param = query_params.get("id", [None])[0]
+id_param = query_params.get("ID", [None])[0]
 
 if id_param:
     try:
@@ -26,8 +26,8 @@ if id_param:
 
             # Campos de forma segura (fallback para diferentes nomes)
             st.markdown(f"**ID**: {item.get('ID')}")
-            st.markdown(f"**Código**: {item.get('CODIGO') or item.get('codigo') or 'Não informado'}")
-            st.markdown(f"**Nome**: {item.get('NOME') or item.get('nome') or 'Não informado'}")
+            st.markdown(f"**Código**: {item.get('CODIGO') or item.get('CODIGO') or 'Não informado'}")
+            st.markdown(f"**Nome**: {item.get('NOME') or item.get('NOME') or 'Não informado'}")
             st.markdown(f"**Quantidade em Estoque**: {item.get('QTDE_ATUAL') or item.get('qtde_atual') or 'Não informado'}")
 
         else:
