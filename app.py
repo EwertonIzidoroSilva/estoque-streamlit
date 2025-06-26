@@ -12,16 +12,17 @@ st.set_page_config(page_title="Consulta de Estoque", page_icon="🔍", layout="c
 
 st.title("🔍 Consulta de Item no Estoque")
 
-# --- Leitura do parâmetro da URL, forçando como texto ---
+# --- Leitura do parâmetro da URL ---
 query_params = st.query_params
 id_param = query_params.get("ID", [None])[0] or query_params.get("id", [None])[0]
 
 if id_param:
-    id_param = str(id_param)  # Força como texto
-    st.info(f"Buscando pelo ID: `{id_param}`")  # Exibe o ID buscado
-
     try:
-        response = supabase.table("DATABASEESTOQUE").select("*").eq("ID", id_param).execute()
+        id_param = int(id_param)  # Força como número inteiro
+        st.info(f"Buscando pelo ID: `{id_param}`")
+
+        # Consulta com campo correto em minúsculo
+        response = supabase.table("DATABASEESTOQUE").select("*").eq("id", id_param).execute()
 
         # DEBUG: Exibir resultado bruto da resposta
         st.write("Resposta bruta do Supabase:", response.data)
@@ -30,7 +31,7 @@ if id_param:
 
         if item:
             st.success("✅ Item encontrado!")
-            st.markdown(f"**📦 ID:** `{item['ID']}`")
+            st.markdown(f"**📦 ID:** `{item['id']}`")
             st.markdown(f"**📝 Descrição:** {item.get('NOME', 'Não informado')}")
             st.markdown(f"**📌 Posição:** {item.get('NUMERO', 'Não definido')}")
             st.markdown(f"**📂 Tipo:** {item.get('TIPO', 'Não definido')}")
