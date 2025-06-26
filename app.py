@@ -17,8 +17,7 @@ id_param = query_params.get("ID", [None])[0] or query_params.get("id", [None])[0
 
 if id_param:
     try:
-        resultado = supabase.table("DATABASEESTOQUE").select("*").eq("ID", id_param).execute()
-        dados = resultado.data
+        resultado = supabase.table("DATABASEESTOQUE").select("*").ilike("ID", f"%{id_param}%").execute()
 
         if dados:
             item = dados[0]
