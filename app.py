@@ -3,7 +3,7 @@ from supabase import create_client, Client
 
 # --- Configurações Supabase ---
 SUPABASE_URL = "https://xhbqtceonstbacfcgidr.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhoYnF0Y2VvbnN0YmFjZmNnaWRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4NjIyMjMsImV4cCI6MjA2NjQzODIyM30.mml3sQJQhCWp_bNYKk7Edff-fBo1PDuqG7SPjw9bNWg"
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # --- Configurações da Página ---
