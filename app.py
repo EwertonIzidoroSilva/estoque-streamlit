@@ -16,11 +16,8 @@ id_param = query_params.get("ID", [None])[0] or query_params.get("id", [None])[0
 
 if id_param:
     try:
-        # Convertendo ID para número se possível
-        id_numeric = int(id_param)
-
-        # Buscar item no Supabase
-        response = supabase.table("DATABASEESTOQUE").select("*").eq("ID", id_numeric).execute()
+        # Buscar item no Supabase (ID é numeric, comparar como texto!)
+        response = supabase.table("DATABASEESTOQUE").select("*").filter("ID", "eq", str(id_param)).execute()
         item = response.data[0] if response.data else None
 
         if item:
@@ -32,8 +29,6 @@ if id_param:
             st.markdown(f"**📊 Quantidade Atual:** {item.get('QTDE ATUAL', 'N/A')}")
         else:
             st.error("❌ Item não encontrado no banco de dados.")
-    except ValueError:
-        st.error("❌ ID inválido. Certifique-se de que é um número.")
     except Exception as e:
         st.error(f"🚨 Erro ao buscar item: {e}")
 else:
