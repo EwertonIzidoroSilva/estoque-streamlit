@@ -12,15 +12,14 @@ st.title("🔍 Consulta de Item no Estoque")
 
 # --- Leitura do parâmetro da URL ---
 query_params = st.query_params
-id_param = query_params.get("ID", [None])[0] or query_params.get("id", [None])[0]
+id_param_str = query_params.get("ID", [None])[0] or query_params.get("id", [None])[0]
 
-if id_param:
-    id_param = str(id_param)  # Força como string para garantir compatibilidade
-    st.info(f"Buscando pelo ID: `{id_param}`")
-
+if id_param_str:
     try:
-        response = supabase.table("DATABASEESTOQUE").select("*").eq("ID", id_param).execute()
+        id_param = int(id_param_str)
+        st.info(f"Buscando pelo ID: `{id_param}`")
 
+        response = supabase.table("DATABASEESTOQUE").select("*").eq("ID", id_param).execute()
         item = response.data[0] if response.data else None
 
         if item:
