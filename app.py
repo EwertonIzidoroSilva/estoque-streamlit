@@ -1,31 +1,47 @@
+# app.py
 import streamlit as st
-from supabase import create_client, Client
+import requests
 
-# Chaves do Supabase
-url = "https://<SEU-PROJETO>.supabase.co"
-key = "sua_chave_anon_publica"
-supabase: Client = create_client(url, key)
+# Configurações da API Supabase
+SUPABASE_URL = "https://xhbqtceonstbacfcgidr.supabase.co"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhoYnF0Y2VvbnN0YmFjZmNnaWRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4NjIyMjMsImV4cCI6MjA2NjQzODIyM30.mml3sQJQhCWp_bNYKk7Edff-fBo1PDuqG7SPjw9bNWg"
+TABELA = "databaseestoque"
 
-# Layout
+# Leitura do ID da URL
+params = st.query_params
+item_id = params.get("id", "")
+
 st.title("🔍 Consulta de Item no Estoque")
 
-# Pega o ID da URL
-query_params = st.experimental_get_query_params()
-id_param = query_params.get("id", [None])[0]
+if item_id:
+    st.info(f"Buscando pelo ID: {item_id}")
 
-if id_param:
-    st.info(f"Buscando pelo ID: {id_param}")
     try:
-        response = supabase.table("databaseestoque").select("*").eq("ID", id_param).execute()
-        if response.data:
-            item = response.data[0]
-            st.success("✅ Item encontrado:")
-            st.write(f"**Descrição:** {item['NOME']}")
-            st.write(f"**Código:** {item['CÓDIGO']}")
-            st.write(f"**Quantidade Atual:** {item['QTDE ATUAL']}")
+        response = requests.get(
+            f"{SUPABASE_URL}/rest/v1/{TABELA}?ID=eq.{item_id}",
+            headers={
+                "apikey": SUPABASE_KEY,
+                "Authorization": f"Bearer {SUPABASE_KEY}",
+                "Content-Type": "application/json"
+            }
+        )
+
+        if response.status_code == 200:
+            dados = response.json()
+            if dados:
+                item = dados[0]
+                st.success("Item encontrado com sucesso!")
+                st.write(f"**Nome:** {item.get('NOME', '-')}")
+                st.write(f"**Código:** {item.get('CÓDIGO', '-')}")
+                st.write(f"**Quantidade Atual:** {item.get('QTDE ATUAL', '-')}")
+                st.write(f"**Posição:** {item.get('POSIÇÃO', '-')}")
+                st.write(f"**Tipo:** {item.get('TIPO', '-')}")
+            else:
+                st.error("❌ Item não encontrado no banco de dados.")
         else:
-            st.error("❌ Item não encontrado no banco de dados.")
+            st.error(f"Erro ao buscar item: {response.text}")
+
     except Exception as e:
         st.error(f"Erro ao buscar item: {e}")
 else:
-    st.warning("🔗 Nenhum ID fornecido na URL.")
+    st.warning("Por favor, forneça um ID válido na URL.")
