@@ -3,21 +3,22 @@ from supabase import create_client, Client
 
 # --- Configurações Supabase ---
 SUPABASE_URL = "https://xhbqtceonstbacfcgidr.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhoYnF0Y2VvbnN0YmFjZmNnaWRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4NjIyMjMsImV4cCI6MjA2NjQzODIyM30.mml3sQJQhCWp_bNYKk7Edff-fBo1PDuqG7SPjw9bNWg"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-# --- Configurações da Página ---
+# --- Página ---
 st.set_page_config(page_title="Consulta de Estoque", page_icon="🔍", layout="centered")
 st.title("🔍 Consulta de Item no Estoque")
 
 # --- Leitura do parâmetro da URL ---
 query_params = st.query_params
-id_param_str = query_params.get("ID", [None])[0] or query_params.get("id", [None])[0]
+id_param = query_params.get("ID", [None])[0] or query_params.get("id", [None])[0]
 
-if id_param_str:
+if id_param:
+    st.info(f"Buscando pelo ID: {id_param}")
+    
     try:
-        id_param = int(id_param_str)
-        st.info(f"Buscando pelo ID: `{id_param}`")
+        id_param = int(id_param)  # ✅ Agora como número
 
         response = supabase.table("DATABASEESTOQUE").select("*").eq("ID", id_param).execute()
         item = response.data[0] if response.data else None
@@ -31,6 +32,8 @@ if id_param_str:
             st.markdown(f"**📊 Quantidade Atual:** {item.get('QTDE ATUAL', 'N/A')}")
         else:
             st.error("❌ Item não encontrado no banco de dados.")
+    except ValueError:
+        st.error("❌ O ID fornecido não é um número válido.")
     except Exception as e:
         st.error(f"Erro ao buscar item: {e}")
 else:
