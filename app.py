@@ -33,7 +33,7 @@ if item_id:
                 st.success("Item encontrado com sucesso!")
                 st.write(f"**Nome:** {item.get('NOME', '-')}")
                 st.write(f"**Código:** {item.get('CÓDIGO', '-')}")
-                st.write(f"**Quantidade Atual:** {item.get('QTDE ATUAL', '-')}")
+                st.write(f"**Quantidade Atual:** {item.get('QTDE_ATUAL', '-')}")
                 st.write(f"**Posição:** {item.get('POSIÇÃO', '-')}")
                 st.write(f"**Tipo:** {item.get('TIPO', '-')}")
             else:
