@@ -1,6 +1,5 @@
 import streamlit as st
 from supabase import create_client, Client
-import os
 
 # --- Configurações Supabase ---
 SUPABASE_URL = "https://xhbqtceonstbacfcgidr.supabase.co"
@@ -11,17 +10,14 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 st.set_page_config(page_title="Consulta de Estoque", page_icon="🔍", layout="centered")
 st.title("🔍 Consulta de Item no Estoque")
 
-# --- Leitura do parâmetro da URL como número ---
+# --- Leitura do parâmetro da URL como numérico ---
 query_params = st.query_params
 id_raw = query_params.get("ID", [None])[0] or query_params.get("id", [None])[0]
+id_param = int(id_raw) if id_raw else None
 
-try:
-    id_param = int(id_raw) if id_raw else None
-except ValueError:
-    id_param = None
-
-if id_param is not None:
+if id_param:
     try:
+        # Buscar item pelo ID numérico
         response = supabase.table("DATABASEESTOQUE").select("*").eq("ID", id_param).execute()
         item = response.data[0] if response.data else None
 
